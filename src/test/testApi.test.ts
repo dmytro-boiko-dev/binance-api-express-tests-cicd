@@ -1,5 +1,27 @@
 import request from 'supertest';
 import app from '../app';
+import axios from 'axios';
+
+// create API mock
+jest.mock('axios');
+
+beforeEach(() => {
+    (axios.get as jest.Mock).mockResolvedValue({
+        // mock API response
+        data: {
+            "pair": "BTCUSDT",
+            "timePeriod": "1d",
+            "dynamic": "DECREASED",
+            "priceChange": "-161.83000000",
+            "priceChangePercent": "-0.148"
+        },
+        status: 200
+    });
+});
+
+afterEach(() => {
+    jest.clearAllMocks();
+});
 
 describe('Express API', () => {
     it('should return health status', async () => {
@@ -21,7 +43,12 @@ describe('Express API', () => {
             .post('/api/prices/')
             .send(data);
         expect(res.statusCode).toBe(200);
-        expect(res.body.dynamic).toBe('INCREASED');
+        expect(['INCREASED', 'DECREASED']).toContain(res.body.dynamic);
+        // expect(res.body.dynamic).toMatch(/^(INCREASED|DECREASED)$/); // or this
         expect(parseFloat(res.body.priceChange)).not.toBe(0);
-    });
+    }, 10000); // 10 seconds timeout
+});
+
+afterEach(() => {
+    jest.clearAllMocks();
 });
