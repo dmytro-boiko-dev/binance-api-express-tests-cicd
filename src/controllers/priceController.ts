@@ -23,8 +23,7 @@ export const healthCheck = (req: Request, res: Response) => {
 
 export const getPrices = async (req: Request, res: Response): Promise<void> => {
     try {
-
-        // 1. Fetch prices
+        // 1. fetch prices
         const pair = req.body.pair;
         const timePeriod = req.body.period;
 
@@ -35,14 +34,14 @@ export const getPrices = async (req: Request, res: Response): Promise<void> => {
         // @ts-ignore
         const {symbol, priceChange, priceChangePercent} = response.data;
 
-        console.log(`Fetched price for ${symbol}`);
-        console.log(`Time period ${timePeriod}`);
+        // console.log(`Fetched price for ${symbol}`);
+        // console.log(`Time period ${timePeriod}`);
 
         // 2. analyze price
         if (Number(priceChange) > 0) {
-            console.log(`Price change dynamic: INCREASED`);
-            console.log(`Absolute price change: ${priceChange}`);
-            console.log(`Price change in percent: ${priceChangePercent}`);
+            // console.log(`Price change dynamic: INCREASED`);
+            // console.log(`Absolute price change: ${priceChange}`);
+            // console.log(`Price change in percent: ${priceChangePercent}`);
 
             let data: ResponseData = {
                 pair: symbol,
@@ -55,9 +54,9 @@ export const getPrices = async (req: Request, res: Response): Promise<void> => {
             res.json(data);
 
         } else {
-            console.log(`Price change dynamic: DECREASED`);
-            console.log(`Absolute price change: ${priceChange}`);
-            console.log(`Price change in percent: ${priceChangePercent}`);
+            // console.log(`Price change dynamic: DECREASED`);
+            // console.log(`Absolute price change: ${priceChange}`);
+            // console.log(`Price change in percent: ${priceChangePercent}`);
 
             let data: ResponseData = {
                 pair: symbol,
